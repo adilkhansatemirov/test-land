@@ -511,7 +511,7 @@
           const subscriptionsResponse = await fetch(
             "https://api.bets.io/api/subscriptions",
             {
-              method: "POST",
+              method: "PUT",
               headers: {
                 "Content-Type": "application/json",
                 Accept: "application/vnd.softswiss.v1+json",
@@ -522,7 +522,7 @@
             }
           );
 
-          window.location.href = 'https://bets.io/?tab=signin';
+          window.location.href = "https://bets.io/?tab=signin";
         } catch (error) {
           console.log("error", error);
         }
