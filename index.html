@@ -387,7 +387,7 @@
 
       document
         .getElementById("registration-form")
-        .addEventListener("submit", function (event) {
+        .addEventListener("submit", async function (event) {
           event.preventDefault();
 
           const email = document.getElementById("email").value;
@@ -398,30 +398,6 @@
             alert("You must agree to the terms and conditions.");
             return;
           }
-
-          String.prototype.hashCode = function () {
-            var hash = 0,
-              i,
-              chr;
-            if (this.length === 0) return hash;
-            for (i = 0; i < this.length; i++) {
-              chr = this.charCodeAt(i);
-              hash = (hash << 5) - hash + chr;
-              hash |= 0;
-            }
-            return hash;
-          };
-
-          const body = {
-            user: {
-              email,
-              password,
-              terms_acceptance: true,
-              profile_attributes: {
-                currency: "BTC",
-              },
-            },
-          };
 
           async function sha256(message) {
             // encode as UTF-8
@@ -440,10 +416,16 @@
             return hashHex;
           }
 
-          sha256("Test1234").then((data) => {
-            console.log("sha256(Test1234)");
-            console.log("data", data);
-          });
+          const body = {
+            user: {
+              email,
+              password: await sha256(password),
+              terms_acceptance: true,
+              profile_attributes: {
+                currency: "BTC",
+              },
+            },
+          };
 
           fetch("https://api.bets.io/api/users", {
             method: "POST",
