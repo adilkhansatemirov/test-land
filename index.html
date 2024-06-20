@@ -561,6 +561,7 @@
             spinned = true;
           } else {
             console.log("submit");
+            container.scrollTop = container.scrollHeight;
             const form = document.getElementById("registration-form");
             // form.submit();
             const submitEvent = new Event("submit", {
