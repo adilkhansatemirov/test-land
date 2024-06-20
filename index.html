@@ -490,6 +490,8 @@
           );
         }
 
+        if (!emailValid || !passwordValid) return;
+
         const body = {
           user: {
             email,
