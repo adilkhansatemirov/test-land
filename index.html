@@ -471,7 +471,7 @@
 
       async function submitForm(event) {
         event.preventDefault();
-        document.getElementById("submit").disabled = true
+        document.getElementById("submit").disabled = true;
         clearErrors();
 
         const email = document.getElementById("email").value;
@@ -493,7 +493,10 @@
           );
         }
 
-        if (!emailValid || !passwordValid) return;
+        if (!emailValid || !passwordValid) {
+          document.getElementById("submit").disabled = true;
+          return;
+        }
 
         const body = {
           user: {
@@ -515,13 +518,13 @@
                 "Content-Type": "application/json",
                 Accept: "application/vnd.softswiss.v1+json",
               },
-              credentials: 'include',
+              credentials: "include",
               body: JSON.stringify(body),
             }
           );
 
           // setTimeout(async () => {
-            const subscriptionsResponse = await fetch(
+          const subscriptionsResponse = await fetch(
             "https://api.bets.io/api/subscriptions",
             {
               method: "PUT",
@@ -529,7 +532,7 @@
                 "Content-Type": "application/json",
                 Accept: "application/vnd.softswiss.v1+json",
               },
-              credentials: 'include',
+              credentials: "include",
               body: JSON.stringify({
                 subscription_params: { receive_promos: true },
               }),
@@ -537,10 +540,11 @@
           );
           // }, 2000);
 
-
           window.location.href = "https://bets.io/?tab=signin";
+          document.getElementById("submit").disabled = false;
         } catch (error) {
           console.log("error", error);
+          document.getElementById("submit").disabled = false;
         }
       }
 
