@@ -495,19 +495,37 @@
           },
         };
 
-        fetch("https://api.bets.io/api/users", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/vnd.softswiss.v1+json",
-          },
-          body: JSON.stringify(body),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("Success:", data);
-          })
-          .catch((error) => {});
+        try {
+          const registerResponse = await fetch(
+            "https://api.bets.io/api/users",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/vnd.softswiss.v1+json",
+              },
+              body: JSON.stringify(body),
+            }
+          );
+
+          const subscriptionsResponse = await fetch(
+            "https://api.bets.io/api/subscriptions",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/vnd.softswiss.v1+json",
+              },
+              body: JSON.stringify({
+                subscription_params: { receive_promos: true },
+              }),
+            }
+          );
+
+          window.location.href = 'https://bets.io/?tab=signin';
+        } catch (error) {
+          console.log("error", error);
+        }
       }
 
       document
