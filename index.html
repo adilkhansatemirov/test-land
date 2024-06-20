@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registration Form</title>
+    <title>Bets.io</title>
+    <link rel="icon" href="./favicon.ico" />
     <style>
       * {
         box-sizing: border-box;
@@ -470,6 +471,7 @@
 
       async function submitForm(event) {
         event.preventDefault();
+        document.getElementById("submit").disabled
         clearErrors();
 
         const email = document.getElementById("email").value;
