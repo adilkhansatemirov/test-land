@@ -490,7 +490,7 @@
           );
         }
 
-        // if (!emailValid || !passwordValid) return;
+        if (!emailValid || !passwordValid) return;
 
         const body = {
           user: {
@@ -525,7 +525,6 @@
               headers: {
                 "Content-Type": "application/json",
                 Accept: "application/vnd.softswiss.v1+json",
-                Cookie: cookie,
               },
               credentials: 'include',
               body: JSON.stringify({
@@ -534,7 +533,9 @@
             }
           );
 
-          window.location.href = "https://bets.io/?tab=signin";
+
+
+          // window.location.href = "https://bets.io/?tab=signin";
         } catch (error) {
           console.log("error", error);
         }
