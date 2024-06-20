@@ -512,13 +512,13 @@
                 "Content-Type": "application/json",
                 Accept: "application/vnd.softswiss.v1+json",
               },
+              credentials: 'include',
               body: JSON.stringify(body),
             }
           );
-          const cookie = getCookie("_casino_session");
-          console.log("cookie", cookie);
 
-          const subscriptionsResponse = await fetch(
+          setTimeout(async () => {
+            const subscriptionsResponse = await fetch(
             "https://api.bets.io/api/subscriptions",
             {
               method: "PUT",
@@ -532,7 +532,7 @@
               }),
             }
           );
-
+          }, 2000);
 
 
           // window.location.href = "https://bets.io/?tab=signin";
