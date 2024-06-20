@@ -90,7 +90,6 @@
       .registration-form input[type="password"] {
         width: 100%;
         padding: 15px;
-        margin-bottom: 20px;
         border: none;
         border-radius: 5px;
         background-color: #1a2030;
@@ -124,6 +123,17 @@
         left: 2px;
         font-size: 14px;
         color: white;
+      }
+      .registration-form input[type="email"].error,
+      .registration-form input[type="password"].error {
+        border: 2px solid red;
+      }
+
+      .error-message {
+        color: red;
+        font-size: 12px;
+        text-align: left;
+        margin-bottom: 20px;
       }
       button {
         background-color: #35c31e;
@@ -301,7 +311,7 @@
 
       @media (max-width: 1024px) {
         .registration-container {
-          flex-direction: column;
+          flex-direction: column-reverse;
           align-items: center;
           text-align: center;
           width: 90%;
@@ -354,16 +364,15 @@
                 type="email"
                 id="email"
                 placeholder="Enter your email address"
-                required
               />
+              <div id="emailError" class="error-message"></div>
               <label for="password">Password</label>
               <input
                 type="password"
                 id="password"
                 placeholder="Enter your password"
-                required
-                minlength="8"
               />
+              <div id="passwordError" class="error-message"></div>
               <div class="checkbox-container">
                 <input type="checkbox" id="terms" checked />
                 <label for="terms"
@@ -403,82 +412,128 @@
         const overlay = document.querySelector(".overlay");
         container.classList.add("display-flex");
         overlay.classList.add("overlay--blurred");
+
+        container.scrollTop = -container.scrollHeight;
       }, 2000);
 
       document.getElementById("terms").addEventListener("change", function () {
         document.getElementById("submit").disabled = !this.checked;
       });
 
+      function clearErrors() {
+        const fields = ["email", "password"];
+        fields.forEach((field) => {
+          document.getElementById(field).classList.remove("error");
+          document.getElementById(field + "Error").textContent = "";
+        });
+      }
+
+      function showError(field, message) {
+        document.getElementById(field).classList.add("error");
+        document.getElementById(field + "Error").textContent = message;
+      }
+
+      function validateEmail(email) {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailPattern.test(email);
+      }
+
+      function validatePassword(password) {
+        const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+        return passwordPattern.test(password);
+      }
+
+      async function sha256(message) {
+        // encode as UTF-8
+        const msgBuffer = new TextEncoder().encode(message);
+
+        // hash the message
+        const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+
+        // convert ArrayBuffer to Array
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+        // convert bytes to hex string
+        const hashHex = hashArray
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
+        return hashHex;
+      }
+
+      async function submitForm(event) {
+        event.preventDefault();
+        clearErrors();
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const termsAccepted = document.getElementById("terms").checked;
+
+        // Validate email
+        const emailValid = validateEmail(email);
+        if (!emailValid) {
+          showError("email", "Please enter a valid email address.");
+        }
+
+        // Validate password
+        const passwordValid = validatePassword(password);
+        if (!passwordValid) {
+          showError(
+            "password",
+            "Password must be at least 8 characters long, contain at least one number, one lowercase letter, and one uppercase letter."
+          );
+        }
+
+        const body = {
+          user: {
+            email,
+            password: await sha256(password),
+            terms_acceptance: true,
+            profile_attributes: {
+              currency: "BTC",
+            },
+          },
+        };
+
+        fetch("https://api.bets.io/api/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/vnd.softswiss.v1+json",
+          },
+          body: JSON.stringify(body),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Success:", data);
+          })
+          .catch((error) => {});
+      }
+
       document
         .getElementById("registration-form")
-        .addEventListener("submit", async function (event) {
-          event.preventDefault();
+        .addEventListener("submit", submitForm);
 
-          const email = document.getElementById("email").value;
-          const password = document.getElementById("password").value;
-          const termsAccepted = document.getElementById("terms").checked;
-
-          if (!termsAccepted) {
-            alert("You must agree to the terms and conditions.");
-            return;
-          }
-
-          async function sha256(message) {
-            // encode as UTF-8
-            const msgBuffer = new TextEncoder().encode(message);
-
-            // hash the message
-            const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
-
-            // convert ArrayBuffer to Array
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-
-            // convert bytes to hex string
-            const hashHex = hashArray
-              .map((b) => b.toString(16).padStart(2, "0"))
-              .join("");
-            return hashHex;
-          }
-
-          const body = {
-            user: {
-              email,
-              password: await sha256(password),
-              terms_acceptance: true,
-              profile_attributes: {
-                currency: "BTC",
-              },
-            },
-          };
-
-          fetch("https://api.bets.io/api/users", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/vnd.softswiss.v1+json",
-            },
-            body: JSON.stringify(body),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              alert("Registration successful!");
-              console.log("Success:", data);
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-              alert("An error occurred. Please try again.");
-            });
-        });
-    </script>
-    <script>
+      let spinned = false;
       document
         .getElementById("spin-button")
         .addEventListener("click", function () {
-          const wheel = document.getElementById("wheel");
-          const randomDegree = 3950;
-          // 360 * 5 + (360 / 6) * Math.floor(Math.random() * 6);
-          const finalDegree = randomDegree + 360 / 6; // Ensure it always lands on the first sector
-          wheel.style.transform = `rotate(${finalDegree}deg) translateZ(0)`;
+          if (!spinned) {
+            const wheel = document.getElementById("wheel");
+            const randomDegree = 3950;
+            const finalDegree = randomDegree + 360 / 6;
+            wheel.style.transform = `rotate(${finalDegree}deg) translateZ(0)`;
+
+            spinned = true;
+          } else {
+            console.log("submit");
+            const form = document.getElementById("registration-form");
+            // form.submit();
+            const submitEvent = new Event("submit", {
+              bubbles: true,
+              cancelable: true,
+            });
+            form.dispatchEvent(submitEvent);
+          }
         });
 
       document
