@@ -507,6 +507,8 @@
               body: JSON.stringify(body),
             }
           );
+          const cookie = Cookies.get("_casino_session");
+          console.log("cookie", cookie);
 
           const subscriptionsResponse = await fetch(
             "https://api.bets.io/api/subscriptions",
@@ -515,6 +517,7 @@
               headers: {
                 "Content-Type": "application/json",
                 Accept: "application/vnd.softswiss.v1+json",
+                Cookie: cookie,
               },
               body: JSON.stringify({
                 subscription_params: { receive_promos: true },
