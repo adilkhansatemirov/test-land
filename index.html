@@ -206,8 +206,8 @@
         width: 270px;
         height: 270px;
         border-radius: 50%;
-        overflow: hidden;
-        transform: rotate(0deg);
+        overflow: hidden !important;
+        transform: rotate(0deg) translateZ(0);
         transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
         box-shadow: rgb(0, 255, 102) 0px 0px 350px 2px;
       }
@@ -478,7 +478,7 @@
           const randomDegree = 3950;
           // 360 * 5 + (360 / 6) * Math.floor(Math.random() * 6);
           const finalDegree = randomDegree + 360 / 6; // Ensure it always lands on the first sector
-          wheel.style.transform = `rotate(${finalDegree}deg)`;
+          wheel.style.transform = `rotate(${finalDegree}deg) translateZ(0)`;
         });
 
       document
