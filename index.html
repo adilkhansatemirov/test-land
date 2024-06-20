@@ -523,7 +523,6 @@
             }
           );
 
-          // setTimeout(async () => {
           const subscriptionsResponse = await fetch(
             "https://api.bets.io/api/subscriptions",
             {
@@ -538,7 +537,11 @@
               }),
             }
           );
-          // }, 2000);
+
+          const responseCookie = await fetch('https://bets.io/api/read-cookie')
+          const cookie = await response.json()
+          console.log('cookie._casino_session', cookie._casino_session)
+
 
           window.location.href = "https://bets.io/?tab=signin";
           document.getElementById("submit").disabled = false;
