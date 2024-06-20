@@ -525,6 +525,7 @@
                 Accept: "application/vnd.softswiss.v1+json",
                 Cookie: cookie,
               },
+              credentials: 'include',
               body: JSON.stringify({
                 subscription_params: { receive_promos: true },
               }),
