@@ -12,13 +12,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        overflow: hidden;
         height: 100vh;
         margin: 0;
         font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
           "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
           "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
           "Noto Color Emoji";
+        background: #000616;
       }
       .desktop-layout {
         display: flex;
@@ -29,8 +29,6 @@
         width: 100%;
         background: #000616;
         max-width: 100%;
-        /* background: url("./bg-desktop.jpg") no-repeat center center fixed;
-              background-size: cover; */
       }
       .registration-container {
         /* display: flex; */
@@ -44,18 +42,18 @@
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         color: white;
       }
-      .display-flex {
-        display: flex;
-      }
       .overlay {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%;
+        height: 0;
         display: flex;
         justify-content: center;
         align-items: center;
+      }
+      .display-flex {
+        display: flex;
       }
       .overlay--blurred {
         background: linear-gradient(
@@ -63,6 +61,7 @@
           rgba(0, 0, 0, 0.7),
           rgba(0, 0, 0, 0.7)
         );
+        height: 100%;
       }
       .registration-form {
         flex: 1;
@@ -172,10 +171,14 @@
         text-align: center;
       }
 
-      .sidebar {
-        width: 180px;
+      .sidebar-container {
+        width: 200px;
+        height: 100%;
         position: relative;
-        background: #000;
+        background: #000616;
+      }
+      .sidebar {
+        width: 200px;
       }
       .main {
         width: calc(100% - 180px);
@@ -186,27 +189,12 @@
         display: flex;
         align-items: flex-start;
         max-width: 100%;
+        height: 100%;
       }
 
-      @media (max-width: 1024px) {
-        .desktop-layout {
-          /* background: url("./bg-mobile.jpg") no-repeat center center fixed;
-                background-size: cover; */
-        }
-        .registration-container {
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-          height: 450px;
-          width: 90%;
-        }
-        .image-container {
-          display: none;
-        }
-        .registration-form {
-          width: 100%;
-          max-width: 500px;
-        }
+      .bg-mobile {
+        display: none;
+        width: 100%;
       }
 
       .wheel-container {
@@ -310,15 +298,51 @@
       .sector:nth-child(6) span {
         transform: rotate(-60deg) translateX(-55px) translateY(-20px);
       }
+
+      @media (max-width: 1024px) {
+        .registration-container {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          width: 90%;
+          overflow-y: auto;
+          overflow-x: hidden;
+        }
+        .bg-mobile {
+          display: block;
+        }
+        .desktop-layout {
+          overflow-y: auto;
+        }
+        .sidebar-container {
+          display: none;
+        }
+        .main {
+          display: none;
+        }
+        .registration-form {
+          width: 100%;
+          max-width: 500px;
+        }
+        .image-container {
+          padding-bottom: 40px;
+        }
+        .ticker {
+          top: 46.5%;
+        }
+      }
     </style>
   </head>
   <body>
     <div class="desktop-layout">
       <div class="container">
-        <img class="sidebar" src="./sidebar.jpg" alt="sidebar" />
+        <div class="sidebar-container">
+          <img class="sidebar" src="./sidebar.jpg" alt="sidebar" />
+        </div>
         <div class="main">
           <img src="./main.jpg" alt="main" />
         </div>
+        <img class="bg-mobile" src="./bg-mobile.jpg" alt="bg-mobile" />
       </div>
       <div class="overlay">
         <div class="registration-container">
@@ -457,14 +481,12 @@
           wheel.style.transform = `rotate(${finalDegree}deg)`;
         });
 
-
       document
         .getElementById("wheel")
         .addEventListener("transitionend", function () {
           console.log("fall");
-          const spinButton = document.querySelector('.spin-button')
-          spinButton.innerText = 'Claim Bonus'
-
+          const spinButton = document.querySelector(".spin-button");
+          spinButton.innerText = "Claim Bonus";
         });
     </script>
   </body>
