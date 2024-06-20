@@ -12,6 +12,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        overflow: hidden;
         height: 100vh;
         margin: 0;
         font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
@@ -22,27 +23,55 @@
       .desktop-layout {
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
+        overflow: hidden;
         height: 100%;
         width: 100%;
-        background: url("./bg-desktop.jpg") no-repeat center center fixed;
-        background-size: cover;
+        background: #000616;
+        max-width: 100%;
+        /* background: url("./bg-desktop.jpg") no-repeat center center fixed;
+              background-size: cover; */
       }
       .registration-container {
-        display: flex;
+        /* display: flex; */
+        display: none;
         justify-content: space-between;
         align-items: center;
-        max-width: 1200px;
+        max-width: 680px;
         height: 600px;
         background-color: #0d1321;
         border-radius: 10px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         color: white;
       }
+      .display-flex {
+        display: flex;
+      }
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .overlay--blurred {
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.7),
+          rgba(0, 0, 0, 0.7)
+        );
+      }
       .registration-form {
         flex: 1;
-        padding: 30px;
+        height: 100%;
+        padding: 30px 20px 30px 30px;
         text-align: center;
+        background-color: #0d1321;
+        position: relative;
+        z-index: 1;
       }
       .registration-form h2 {
         margin-bottom: 30px;
@@ -80,7 +109,7 @@
       .registration-form input[type="checkbox"] {
         margin-right: 10px;
         background-color: #404350;
-        width: 16px;
+        min-width: 16px;
         height: 16px;
         border: none;
         border-radius: 3px;
@@ -97,42 +126,72 @@
         font-size: 14px;
         color: white;
       }
-      .registration-form button {
+      button {
         background-color: #35c31e;
         color: white;
-        padding: 15px;
+        padding: 12px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
+      }
+      .registration-form button {
         width: 100%;
       }
-      .registration-form button:hover {
+      .registration-form button {
+        width: 100%;
+      }
+      .spin-button {
+        width: 160px;
+        position: relative;
+        margin-top: 40px;
+      }
+      button:hover {
         background-color: #2a9b1a;
       }
-      .registration-form button:active {
+      button:active {
         background-color: #217e14;
       }
-      .registration-form button:disabled {
+      button:disabled {
         background-color: #999;
         cursor: not-allowed;
       }
       .image-container {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        justify-content: flex-start;
         align-items: center;
         height: 100%;
+        width: 335px;
+        position: relative;
       }
-      .image-container img {
+
+      .image-container h1 {
+        font-size: 20px;
+        padding: 30px 0;
+        width: 70%;
+        text-align: center;
+      }
+
+      .sidebar {
+        width: 180px;
+        position: relative;
+        background: #000;
+      }
+      .main {
+        width: calc(100% - 180px);
+        display: flex;
+        justify-content: right;
+      }
+      .container {
+        display: flex;
+        align-items: flex-start;
         max-width: 100%;
-        height: 100%;
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
       }
 
       @media (max-width: 1024px) {
         .desktop-layout {
-          background: url("./bg-mobile.jpg") no-repeat center center fixed;
-          background-size: cover;
+          /* background: url("./bg-mobile.jpg") no-repeat center center fixed;
+                background-size: cover; */
         }
         .registration-container {
           flex-direction: column;
@@ -149,44 +208,179 @@
           max-width: 500px;
         }
       }
+
+      .wheel-container {
+        text-align: center;
+      }
+
+      .wheel {
+        position: relative;
+        width: 270px;
+        height: 270px;
+        border-radius: 50%;
+        overflow: hidden;
+        transform: rotate(0deg);
+        transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+        box-shadow: rgb(0, 255, 102) 0px 0px 350px 2px;
+      }
+
+      .wheel-border {
+        position: absolute;
+        z-index: 10;
+        width: 271px;
+        min-height: 271px;
+        left: 0px;
+        top: 0px;
+      }
+
+      .sector {
+        position: absolute;
+        width: 50%;
+        height: 50%;
+        background-color: white;
+        clip-path: polygon(50% 0, 0 0, 0 100%, 100% 100%);
+        transform-origin: 100% 100%;
+      }
+
+      .ticker {
+        position: absolute;
+        z-index: 10;
+        top: 41%;
+      }
+
+      .sector:nth-child(even) {
+        background-color: #1ea109;
+      }
+
+      .sector span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(60deg);
+        transform-origin: 0 0;
+        color: #1ea109;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .sector:nth-child(even) span {
+        color: white;
+      }
+
+      .sector:nth-child(1) {
+        transform: rotate(0deg);
+        z-index: 1;
+      }
+      .sector:nth-child(1) span {
+        transform: rotate(-60deg) translateX(-55px) translateY(-20px);
+      }
+      .sector:nth-child(2) {
+        transform: rotate(-60deg);
+        z-index: 2;
+      }
+      .sector:nth-child(2) span {
+        transform: rotate(-60deg) translateX(-55px) translateY(-20px);
+      }
+      .sector:nth-child(3) {
+        transform: rotate(-120deg);
+        z-index: 3;
+      }
+      .sector:nth-child(3) span {
+        transform: rotate(-60deg) translateX(-55px) translateY(-20px);
+      }
+      .sector:nth-child(4) {
+        transform: rotate(-180deg);
+        z-index: 4;
+      }
+      .sector:nth-child(4) span {
+        transform: rotate(-60deg) translateX(-55px) translateY(-20px);
+      }
+      .sector:nth-child(5) {
+        transform: rotate(-240deg);
+        z-index: 4;
+      }
+      .sector:nth-child(5) span {
+        transform: rotate(-60deg) translateX(-55px) translateY(-20px);
+      }
+      .sector:nth-child(6) {
+        transform: rotate(-300deg);
+        z-index: 4;
+      }
+      .sector:nth-child(6) span {
+        transform: rotate(-60deg) translateX(-55px) translateY(-20px);
+      }
     </style>
   </head>
   <body>
     <div class="desktop-layout">
-      <div class="registration-container">
-        <div class="registration-form">
-          <h2>Create your Bets.io Account</h2>
-          <form id="registration-form">
-            <label for="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="Enter your email address"
-              required
-            />
-            <label for="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Enter your password"
-              required
-            />
-            <div class="checkbox-container">
-              <input type="checkbox" id="terms" checked />
-              <label for="terms"
-                >By clicking here, I state that I have read and understood Terms & Conditions, Privacy policy</label
-              >
-            </div>
-            <button type="submit" id="submit">Register</button>
-          </form>
+      <div class="container">
+        <img class="sidebar" src="./sidebar.jpg" alt="sidebar" />
+        <div class="main">
+          <img src="./main.jpg" alt="main" />
         </div>
-        <div class="image-container">
-          <img src="./modal-image.jpg" alt="Modal Image" />
+      </div>
+      <div class="overlay">
+        <div class="registration-container">
+          <div class="registration-form">
+            <h2>Create your Bets.io Account</h2>
+            <form id="registration-form">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="Enter your email address"
+                required
+              />
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+                required
+                minlength="8"
+              />
+              <div class="checkbox-container">
+                <input type="checkbox" id="terms" checked />
+                <label for="terms"
+                  >By clicking here, I state that I have read and understood
+                  Terms & Conditions, Privacy policy</label
+                >
+              </div>
+              <button type="submit" id="submit">Register</button>
+            </form>
+          </div>
+          <div class="image-container">
+            <h1>SPIN THE WHEEL AND GET YOUR BONUS</h1>
+            <div class="wheel" id="wheel">
+              <div class="sector"><span>100% DEPOSIT</span></div>
+              <div class="sector"><span>50% DEPOSIT</span></div>
+              <div class="sector"><span>20% DEPOSIT</span></div>
+              <div class="sector"><span>150% DEPOSIT</span></div>
+              <div class="sector"><span>TRY MORE</span></div>
+              <div class="sector"><span>75% DEPOSIT</span></div>
+
+              <img
+                src="./wheel-border.svg"
+                class="wheel-border"
+                alt="wheel-border"
+              />
+            </div>
+            <img class="ticker" src="./ticker.svg" alt="ticker" />
+            <button id="spin-button" class="spin-button">Spin</button>
+          </div>
         </div>
       </div>
     </div>
 
     <script>
+      setTimeout(() => {
+        const container = document.querySelector(".registration-container");
+        const overlay = document.querySelector(".overlay");
+        container.classList.add("display-flex");
+        overlay.classList.add("overlay--blurred");
+      }, 2000);
+
       document.getElementById("terms").addEventListener("change", function () {
         document.getElementById("submit").disabled = !this.checked;
       });
@@ -213,7 +407,7 @@
             for (i = 0; i < this.length; i++) {
               chr = this.charCodeAt(i);
               hash = (hash << 5) - hash + chr;
-              hash |= 0; 
+              hash |= 0;
             }
             return hash;
           };
@@ -221,7 +415,7 @@
           const body = {
             user: {
               email,
-              password: 'cf798ccf6a19687b8ee9d519bcabd9730b1da1f8ae815125de44cd9c5ca99b0b',
+              password,
               terms_acceptance: true,
               profile_attributes: {
                 currency: "BTC",
@@ -229,11 +423,33 @@
             },
           };
 
+          async function sha256(message) {
+            // encode as UTF-8
+            const msgBuffer = new TextEncoder().encode(message);
+
+            // hash the message
+            const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+
+            // convert ArrayBuffer to Array
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+            // convert bytes to hex string
+            const hashHex = hashArray
+              .map((b) => b.toString(16).padStart(2, "0"))
+              .join("");
+            return hashHex;
+          }
+
+          sha256("Test1234").then((data) => {
+            console.log("sha256(Test1234)");
+            console.log("data", data);
+          });
+
           fetch("https://api.bets.io/api/users", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Accept: 'application/vnd.softswiss.v1+json',
+              Accept: "application/vnd.softswiss.v1+json",
             },
             body: JSON.stringify(body),
           })
@@ -246,6 +462,27 @@
               console.error("Error:", error);
               alert("An error occurred. Please try again.");
             });
+        });
+    </script>
+    <script>
+      document
+        .getElementById("spin-button")
+        .addEventListener("click", function () {
+          const wheel = document.getElementById("wheel");
+          const randomDegree = 3950;
+          // 360 * 5 + (360 / 6) * Math.floor(Math.random() * 6);
+          const finalDegree = randomDegree + 360 / 6; // Ensure it always lands on the first sector
+          wheel.style.transform = `rotate(${finalDegree}deg)`;
+        });
+
+
+      document
+        .getElementById("wheel")
+        .addEventListener("transitionend", function () {
+          console.log("fall");
+          const spinButton = document.querySelector('.spin-button')
+          spinButton.innerText = 'Claim Bonus'
+
         });
     </script>
   </body>
