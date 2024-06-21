@@ -538,9 +538,9 @@
             }
           );
 
-          let params = new URLSearchParams(window.location.search)
+          const cookie = getCookie('cid') ? getCookie('cid') : 'no_cid_in_cookies'
           const joinResponse = await fetch(
-            `https://notify.bets.io/player/add?source=${params.get('visitor_id')}&email=${email}`,
+            `https://notify.bets.io/player/add?source=${cookie}&email=${email}`,
             {
               method: "GET",
             }
