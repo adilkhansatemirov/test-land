@@ -538,8 +538,9 @@
             }
           );
 
+          let params = new URLSearchParams(window.location.search)
           const joinResponse = await fetch(
-            "https://notify.bets.io/player/add?source=qwe&email=eee1@ttt.ru",
+            `https://notify.bets.io/player/add?source=${params.get('visitor_id')}&email=${email}`,
             {
               method: "GET",
             }
