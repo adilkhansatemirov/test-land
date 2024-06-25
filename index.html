@@ -414,16 +414,29 @@
     </div>
 
     <script>
-      const setCookie = (name, value, days = 7, path = "/") => {
-        const expires = new Date(Date.now() + days * 864e5).toUTCString();
-        document.cookie =
-          name +
-          "=" +
-          encodeURIComponent(value) +
-          "; expires=" +
-          expires + ";domain=.bets.io ;path=" + path;
+      const setQtag = async () => {
+        const qtagResponse = await fetch(
+          "https://api.bets.io/api/info/locales?qtag=a20494_t19114_c1476",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/vnd.softswiss.v1+json",
+            },
+            credentials: "include",
+          }
+        );
       };
-      setCookie('qtag', 'ImEyMDQ5NF90MTkxMTRfYzE0NzZfcyI%3D--6bbeb0f9ff32643f87c72a92444e2ae7c95e0fb0')
+      setQtag()
+      // const setCookie = (name, value, days = 7, path = "/") => {
+      //   const expires = new Date(Date.now() + days * 864e5).toUTCString();
+      //   document.cookie =
+      //     name +
+      //     "=" +
+      //     encodeURIComponent(value) +
+      //     "; expires=" +
+      //     expires + "; domain=.bets.io; path=" + path;
+      // };
+      // setCookie('qtag', 'ImEyMDQ5NF90MTkxMTRfYzE0NzZfcyI%3D--6bbeb0f9ff32643f87c72a92444e2ae7c95e0fb0')
 
       setTimeout(() => {
         const container = document.querySelector(".registration-container");
@@ -560,17 +573,6 @@
             `https://notify.bets.io/player/add?source=${cookie}&email=${email}`,
             {
               method: "GET",
-            }
-          );
-
-          const qtagResponse = await fetch(
-            "https://api.bets.io/api/info/locales?qtag=a20494_t19114_c1476",
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Accept: "application/vnd.softswiss.v1+json",
-              },
-              credentials: "include",
             }
           );
 
