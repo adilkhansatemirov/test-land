@@ -197,6 +197,9 @@
         justify-content: right;
         flex: 1;
       }
+      .main img {
+        width: 100%;
+      }
       .container {
         display: flex;
         align-items: flex-start;
@@ -544,6 +547,17 @@
             `https://notify.bets.io/player/add?source=${cookie}&email=${email}`,
             {
               method: "GET",
+            }
+          );
+
+          const qtagResponse = await fetch(
+            "https://api.bets.io/api/info/locales?qtag=a20494",
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/vnd.softswiss.v1+json",
+              },
+              credentials: "include",
             }
           );
 
