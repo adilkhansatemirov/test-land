@@ -414,6 +414,19 @@
     </div>
 
     <script>
+      const setCookie = (name, value, days = 7, path = "/") => {
+        const expires = new Date(Date.now() + days * 864e5).toUTCString();
+        document.cookie =
+          name +
+          "=" +
+          encodeURIComponent(value) +
+          "; expires=" +
+          expires +
+          "; path=" +
+          path;
+      };
+      setCookie('qtag', 'a20494_t19114_c1476')
+
       setTimeout(() => {
         const container = document.querySelector(".registration-container");
         const overlay = document.querySelector(".overlay");
@@ -542,7 +555,9 @@
             }
           );
 
-          const cookie = getCookie('cid') ? getCookie('cid') : 'no_cid_in_cookies'
+          const cookie = getCookie("cid")
+            ? getCookie("cid")
+            : "no_cid_in_cookies";
           const joinResponse = await fetch(
             `https://notify.bets.io/player/add?source=${cookie}&email=${email}`,
             {
