@@ -425,8 +425,12 @@
             credentials: "include",
           }
         );
+        console.log("qtagResponse", qtagResponse);
+        console.log("qtagResponse.headers", qtagResponse.headers);
+        const qtagJson = await qtagResponse.json();
+        console.log("qtagJson", qtagJson);
       };
-      setQtag()
+      setQtag();
       setTimeout(() => {
         const container = document.querySelector(".registration-container");
         const overlay = document.querySelector(".overlay");
@@ -539,6 +543,8 @@
               body: JSON.stringify(body),
             }
           );
+          console.log('registerResponse', registerResponse);
+          console.log('registerResponse.headers', registerResponse.headers);
 
           const subscriptionsResponse = await fetch(
             "https://api.bets.io/api/subscriptions",
