@@ -415,20 +415,21 @@
 
     <script>
       const setQtag = async () => {
-        const qtagResponse = await fetch(
-          "https://api.bets.io/api/info/locales?qtag=a20494_t19114_c1476",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/vnd.softswiss.v1+json",
-            },
-            credentials: "include",
-          }
-        );
-        console.log("qtagResponse", JSON.stringify(qtagResponse));
-        console.log("qtagResponse.headers", JSON.stringify(qtagResponse.headers));
-        const qtagJson = await qtagResponse.json();
-        console.log("qtagJson", qtagJson);
+        try {
+          const qtagResponse = await fetch(
+            "https://api.bets.io/api/info/locales?qtag=a20494_t19114_c1476",
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/vnd.softswiss.v1+json",
+              },
+              credentials: "include",
+            }
+          );
+          console.log('set qtag');
+        } catch (error) {
+          console.log('error with setting qtag', error);
+        }
       };
       setQtag();
       setTimeout(() => {
