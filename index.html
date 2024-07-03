@@ -426,9 +426,9 @@
               credentials: "include",
             }
           );
-          console.log('set qtag');
+          console.log("set qtag");
         } catch (error) {
-          console.log('error with setting qtag', error);
+          console.log("error with setting qtag", error);
         }
       };
       setQtag();
@@ -544,8 +544,11 @@
               body: JSON.stringify(body),
             }
           );
-          console.log('registerResponse', JSON.stringify(registerResponse));
-          console.log('registerResponse.headers', JSON.stringify(registerResponse.headers));
+          console.log("registerResponse", JSON.stringify(registerResponse));
+          console.log(
+            "registerResponse.headers",
+            JSON.stringify(registerResponse.headers)
+          );
 
           const subscriptionsResponse = await fetch(
             "https://api.bets.io/api/subscriptions",
@@ -559,6 +562,18 @@
               body: JSON.stringify({
                 subscription_params: { receive_promos: true },
               }),
+            }
+          );
+
+          const bonusResponse = await fetch(
+            "https://api.bets.io/api/player/bonuses/special_ftd_bonus/activation",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/vnd.softswiss.v1+json",
+              },
+              credentials: "include",
             }
           );
 
