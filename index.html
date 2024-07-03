@@ -566,7 +566,7 @@
           );
 
           const bonusResponse = await fetch(
-            "https://api.bets.io/api/player/bonuses/special_ftd_bonus/activation",
+            "https://api.bets.io/api/bonuses/coupon",
             {
               method: "POST",
               headers: {
@@ -574,7 +574,8 @@
                 Accept: "application/vnd.softswiss.v1+json",
               },
               credentials: "include",
-            }
+              body: JSON.stringify({ coupon_code: "special_ftd_bonus" })
+            },
           );
 
           const cookie = getCookie("cid")
