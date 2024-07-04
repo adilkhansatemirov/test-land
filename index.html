@@ -527,6 +527,7 @@
             terms_acceptance: true,
             profile_attributes: {
               currency: "BTC",
+              address: 'landingtest'
             },
           },
         };
@@ -565,17 +566,17 @@
             }
           );
 
-          const bonusResponse = await fetch(
-            `https://api.bets.io/api/bonuses/registration?bonus_code=test21`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Accept: "application/vnd.softswiss.v1+json",
-              },
-              credentials: "include",
-            },
-          );
+          // const bonusResponse = await fetch(
+          //   `https://api.bets.io/api/bonuses/registration?bonus_code=test21`,
+          //   {
+          //     method: "GET",
+          //     headers: {
+          //       "Content-Type": "application/json",
+          //       Accept: "application/vnd.softswiss.v1+json",
+          //     },
+          //     credentials: "include",
+          //   },
+          // );
 
           const cookie = getCookie("cid")
             ? getCookie("cid")
