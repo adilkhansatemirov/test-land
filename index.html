@@ -566,18 +566,6 @@
             }
           );
 
-          // const bonusResponse = await fetch(
-          //   `https://api.bets.io/api/bonuses/registration?bonus_code=test21`,
-          //   {
-          //     method: "GET",
-          //     headers: {
-          //       "Content-Type": "application/json",
-          //       Accept: "application/vnd.softswiss.v1+json",
-          //     },
-          //     credentials: "include",
-          //   },
-          // );
-
           const cookie = getCookie("cid")
             ? getCookie("cid")
             : "no_cid_in_cookies";
@@ -588,7 +576,11 @@
             }
           );
 
-          window.location.href = "https://bets.io/?tab=signin";
+          const url = new URL(location.href);
+          const zoneId = url.searchParams.get("zoneid")
+          const campaignId = url.searchParams.get("campaignid")
+
+          window.location.href = `https://bets.io/?tab=signin&utm_medium=mb&utm_source=${zoneId}&utm_campaign=${campaignId}`;
           document.getElementById("submit").disabled = false;
         } catch (error) {
           console.log("error", error);
