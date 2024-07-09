@@ -533,25 +533,21 @@
         };
 
         try {
-          const registerResponse = await fetch(
-            "https://api.bets.io/api/users",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Accept: "application/vnd.softswiss.v1+json",
-              },
-              credentials: "include",
-              body: JSON.stringify(body),
-            }
-          );
-          console.log("registerResponse", JSON.stringify(registerResponse));
-          console.log(
-            "registerResponse.headers",
-            JSON.stringify(registerResponse.headers)
-          );
+          const cookie = getCookie("cid")
+            ? getCookie("cid")
+            : "no_cid_in_cookies";
 
-          const subscriptionsResponse = await fetch(
+          const registerRequest = fetch("https://api.bets.io/api/users", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/vnd.softswiss.v1+json",
+            },
+            credentials: "include",
+            body: JSON.stringify(body),
+          });
+
+          const subscriptionsRequest = fetch(
             "https://api.bets.io/api/subscriptions",
             {
               method: "PUT",
@@ -566,22 +562,22 @@
             }
           );
 
-          const cookie = getCookie("cid")
-            ? getCookie("cid")
-            : "no_cid_in_cookies";
-          const joinResponse = await fetch(
+          const joinRequest = fetch(
             `https://notify.bets.io/player/add?source=${cookie}&email=${email}`,
             {
               method: "GET",
             }
           );
 
-          const url = new URL(location.href);
-          const zoneId = url.searchParams.get("zoneid")
-          const campaignId = url.searchParams.get("campaignid")
+          Promise.all([registerRequest, subscriptionsRequest, joinRequest])
+            .then(() => {
+              const url = new URL(location.href);
+              const zoneId = url.searchParams.get("zoneid");
+              const campaignId = url.searchParams.get("campaignid");
 
-          window.location.href = `https://bets.io/?tab=signin&utm_medium=mb&utm_source=${zoneId}&utm_campaign=${campaignId}`;
-          document.getElementById("submit").disabled = false;
+              window.location.href = `https://bets.io/?tab=signin&utm_medium=mb&utm_source=${zoneId}&utm_campaign=${campaignId}`;
+            })
+            .catch((error) => console.log(error));
         } catch (error) {
           console.log("error", error);
           document.getElementById("submit").disabled = false;
